@@ -2,10 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () { return view('home'); })->name('home');
+Auth::routes();
 
-Route::get('/sign-in', function () { return view('signin'); })->name('sign-in-get');
-Route::post('/sign-in', 'SignInController@signIn')->name('sign-in-post');
+Route::get('/', 'IndexController@index')->name('index');
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
 
-Route::get('/sign-up', function () { return view('signup'); })->name('sign-up-get');
-Route::post('/sign-up', 'SignUpController@signUp')->name('sign-up-post');
+Route::get('/subscribe', 'SubscriptionController@index')->name('subscription');
+Route::post('/subscribe/subscribe', 'SubscriptionController@subscribe')->name('subscribe');
+Route::post('/subscribe/unsubscribe/{email}', 'SubscriptionController@unsubscribe')->name('unsubscribe');
+
+Route::get('/contact', 'ContactUsController@index')->name('contact');
+
+Route::get('/home', 'HomeController@index')->name('home');

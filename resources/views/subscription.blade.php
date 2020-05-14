@@ -8,7 +8,12 @@
                 <p>{{__('If you wish to get the notices about new post on this blog by email subscribe by filling the form
                 below.')}}</p>
 
-                <form>
+                @include('inc.messages')
+
+                <form action="{{route('subscribe')}}" method="POST">
+
+                    @csrf
+
                     <div class="form-group">
                         <label for="email">{{__('E-mail')}}:</label>
                         <input type="email" name="email" id="email" class="form-control" required/>

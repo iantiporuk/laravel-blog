@@ -9,9 +9,9 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
-Route::get('/subscribe', 'SubscriptionController@index')->name('subscription');
-Route::post('/subscribe/subscribe', 'SubscriptionController@subscribe')->name('subscribe');
-Route::post('/subscribe/unsubscribe/{email}', 'SubscriptionController@unsubscribe')->name('unsubscribe');
+Route::get('/subscription', 'SubscriptionController@index')->name('subscription');
+Route::post('/subscription/subscribe', 'SubscriptionController@subscribe')->name('subscribe');
+Route::get('/subscription/unsubscribe/{email}', 'SubscriptionController@unsubscribe')->name('unsubscribe');
 
 Route::get('/contact', 'ContactUsController@index')->name('contact');
 

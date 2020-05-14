@@ -1,7 +1,7 @@
-artisan-migrate:
+migrate:
 	docker-compose exec app php artisan migrate
 
-artisan-migrate-rollback:
+migrate-rollback:
 	docker-compose exec app php artisan migrate
 
 clear-all:

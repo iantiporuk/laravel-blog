@@ -24,11 +24,11 @@
                 <!-- Authentication Links -->
                 @guest
                     <li class="nav-item">
-                        <a class="btn btn-outline-primary mr-3 ml-1" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        <a class="btn btn-outline-primary mr-md-3 ml-md-1" href="{{ route('login') }}">{{ __('Login') }}</a>
                     </li>
                     @if (Route::has('register'))
                         <li class="nav-item">
-                            <a class="btn btn-outline-success" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            <a class="btn btn-outline-success mt-2 mt-md-0" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
                     @endif
                 @else

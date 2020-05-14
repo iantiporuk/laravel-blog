@@ -2,7 +2,7 @@ migrate:
 	docker-compose exec app php artisan migrate
 
 migrate-rollback:
-	docker-compose exec app php artisan migrate
+	docker-compose exec app php artisan migrate:rollback
 
 clear-all:
 	docker-compose exec app php artisan cache:clear

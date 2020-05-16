@@ -34,9 +34,7 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="text-right">
-                                <button type="submit" class="btn btn-primary btn-lg">{{__('Submit')}}</button>
-                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg">{{__('Submit')}}</button>
                         </div>
                     </fieldset>
                 </form>

@@ -54,6 +54,14 @@ services:
     networks:
       - app-network
 
+  #SMTP server
+  smtp:
+    image: namshi/smtp
+    container_name: smtp
+    restart: always
+    networks:
+      - app-network
+
 #Docker Networks
 networks:
   app-network:

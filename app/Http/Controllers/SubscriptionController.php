@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Subscription;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class SubscriptionController extends Controller
@@ -27,23 +26,14 @@ class SubscriptionController extends Controller
     public function subscribe(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email', 'max:255', 'unique:subscriptions'],
         ]);
 
-        try {
-            $subscription = new Subscription;
-            $subscription->email = $request->email;
-            $subscription->save();
+        $subscription = new Subscription;
+        $subscription->email = $request->email;
+        $subscription->save();
 
-            return redirect()->back()->with('success', __('Thanks! Now you are subscribed.'));
-        } catch (QueryException  $e) {
-
-            // catch database exception like Duplicate entry
-            return redirect()->back()->with('error', __('You have already subscribed.'));
-        } catch (\Exception  $e) {
-
-            return redirect()->back()->with('error', __('Something went wrong.'));
-        }
+        return redirect()->back()->with('success', __('Thanks! Now you are subscribed.'));
     }
 
     /**

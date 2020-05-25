@@ -20,8 +20,8 @@
                     <a class="nav-link {{request()->route()->getName() == 'admin-posts' ? 'active' : '' }}"
                        href="{{route('admin-posts')}}">{{__('Posts')}}</a>
                 </li>
-{{--                <li class="nav-item"><a class="nav-link {{request()->is('admin-subscription') ? 'active' : '' }}"--}}
-{{--                                        href="{{route('admin-subscription')}}">{{__('Subscribe')}}</a></li>--}}
+                <li class="nav-item"><a class="nav-link {{request()->is('admin-categories') ? 'active' : '' }}"
+                                        href="{{route('admin-categories')}}">{{__('Categories')}}</a></li>
 {{--                <li class="nav-item"><a class="nav-link {{request()->is('admin-about') ? 'active' : '' }}"--}}
 {{--                                        href="{{route('admin-about')}}">{{__('About Us')}}</a></li>--}}
 {{--                <li class="nav-item"><a class="nav-link {{request()->is('admin-contact') ? 'active' : '' }}"--}}

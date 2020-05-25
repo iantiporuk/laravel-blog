@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
     <div class="container">
-        <a class="navbar-brand" href="{{ url('/') }}">
-            {{ config('app.name', 'Laravel Blog') }}
+        <a class="navbar-brand" href="{{ route('admin') }}">
+            {{ __('Laravel Admin') }}
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -16,19 +16,27 @@
 
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link {{request()->is('posts') ? 'active' : '' }}" href="{{route('posts')}}">{{__('Posts')}}</a></li>
-                <li class="nav-item"><a class="nav-link {{request()->is('subscription') ? 'active' : '' }}" href="{{route('subscription')}}">{{__('Subscribe')}}</a></li>
-                <li class="nav-item"><a class="nav-link {{request()->is('about') ? 'active' : '' }}" href="{{route('about')}}">{{__('About Us')}}</a></li>
-                <li class="nav-item"><a class="nav-link {{request()->is('contact') ? 'active' : '' }}" href="{{route('contact')}}">{{__('Contact Us')}}</a></li>
+                <li class="nav-item">
+                    <a class="nav-link {{request()->route()->getName() == 'admin-posts' ? 'active' : '' }}"
+                       href="{{route('admin-posts')}}">{{__('Posts')}}</a>
+                </li>
+{{--                <li class="nav-item"><a class="nav-link {{request()->is('admin-subscription') ? 'active' : '' }}"--}}
+{{--                                        href="{{route('admin-subscription')}}">{{__('Subscribe')}}</a></li>--}}
+{{--                <li class="nav-item"><a class="nav-link {{request()->is('admin-about') ? 'active' : '' }}"--}}
+{{--                                        href="{{route('admin-about')}}">{{__('About Us')}}</a></li>--}}
+{{--                <li class="nav-item"><a class="nav-link {{request()->is('admin-contact') ? 'active' : '' }}"--}}
+{{--                                        href="{{route('admin-contact')}}">{{__('Contact Us')}}</a></li>--}}
 
                 <!-- Authentication Links -->
                 @guest
                     <li class="nav-item">
-                        <a class="btn btn-outline-primary mr-md-3 ml-md-1" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        <a class="btn btn-outline-primary mr-md-3 ml-md-1"
+                           href="{{ route('login') }}">{{ __('Login') }}</a>
                     </li>
                     @if (Route::has('register'))
                         <li class="nav-item">
-                            <a class="btn btn-outline-success mt-2 mt-md-0" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            <a class="btn btn-outline-success mt-2 mt-md-0"
+                               href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
                     @endif
                 @else
@@ -39,7 +47,7 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('admin')  }}">{{ __('Admin')  }}</a>
+                            <a class="dropdown-item" href="{{ route('index') }}">{{ __('Back to site') }}</a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

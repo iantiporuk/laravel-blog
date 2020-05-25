@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSubscriberTable extends Migration
+class CreateCategoryPostTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class AddSubscriberTable extends Migration
      */
     public function up()
     {
-        Schema::create('subscriptions', function (Blueprint $table) {
+        Schema::create('category_post', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->unique();
+            $table->foreignId('post_id')->constrained('posts');
+            $table->foreignId('category_id')->constrained('categories');
+            $table->unique(['post_id', 'category_id']);
         });
     }
 
@@ -26,6 +28,6 @@ class AddSubscriberTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subscriptions');
+        Schema::dropIfExists('category_post');
     }
 }

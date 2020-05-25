@@ -16,4 +16,5 @@ Route::get('/subscription/unsubscribe/{email}', 'SubscriptionController@unsubscr
 Route::get('/contact', 'ContactController@index')->name('contact');
 Route::post('/contact/submit', 'ContactController@submit')->name('contact-submit');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/posts', 'PostController@index')->name('posts');
+Route::get('/posts/{id}', 'PostController@post')->name('post');

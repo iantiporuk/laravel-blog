@@ -7,6 +7,13 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+// Bootstrap-select
+@import "~bootstrap-select/sass/variables";
+@import "~bootstrap-select/sass/bootstrap-select";
+
 //Font-Awesome
 @import "font-awesome/fontawesome.scss";
 @import "font-awesome/solid.scss";
+
+//Custom styles
+@import "styles";

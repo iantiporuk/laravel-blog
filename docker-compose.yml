@@ -19,6 +19,11 @@ services:
       - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
     networks:
       - app-network
+    depends_on:
+      - webserver
+      - db
+      - redis
+      - smtp
 
   #Nginx Service
   webserver:
@@ -54,11 +59,20 @@ services:
     networks:
       - app-network
 
-  #SMTP server
+  #SMTP service
   smtp:
     image: namshi/smtp
     container_name: smtp
     restart: always
+    networks:
+      - app-network
+
+  # Redis service
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    ports:
+      - "6379:6379"
     networks:
       - app-network
 

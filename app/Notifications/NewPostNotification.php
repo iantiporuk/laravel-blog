@@ -9,7 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
-class NewPostNotification extends Notification
+class NewPostNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -47,6 +47,7 @@ class NewPostNotification extends Notification
      */
     public function toMail(Subscription $subscription)
     {
+        info('toMail');
         return (new NewPostMail($this->post, $subscription))->to($subscription->email);
     }
 

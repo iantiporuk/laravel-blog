@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
     <div class="container">
-        <a class="navbar-brand" href="{{ route('admin') }}">
+        <a class="navbar-brand" href="{{ route('admin.index') }}">
             {{ __('Laravel Admin') }}
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -17,11 +17,11 @@
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link {{request()->route()->getName() == 'admin-posts' ? 'active' : '' }}"
-                       href="{{route('admin-posts')}}">{{__('Posts')}}</a>
+                    <a class="nav-link {{request()->route()->getName() == 'admin.posts.index' ? 'active' : '' }}"
+                       href="{{route('admin.posts.index')}}">{{__('Posts')}}</a>
                 </li>
-                <li class="nav-item"><a class="nav-link {{request()->is('admin-categories') ? 'active' : '' }}"
-                                        href="{{route('admin-categories')}}">{{__('Categories')}}</a></li>
+                <li class="nav-item"><a class="nav-link {{request()->route()->getName() == 'admin.categories.index' ? 'active' : '' }}"
+                                        href="{{route('admin.categories.index')}}">{{__('Categories')}}</a></li>
 {{--                <li class="nav-item"><a class="nav-link {{request()->is('admin-about') ? 'active' : '' }}"--}}
 {{--                                        href="{{route('admin-about')}}">{{__('About Us')}}</a></li>--}}
 {{--                <li class="nav-item"><a class="nav-link {{request()->is('admin-contact') ? 'active' : '' }}"--}}

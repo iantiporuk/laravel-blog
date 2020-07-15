@@ -7,6 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'title', 'text', 'user_id', 'active'
+    ];
+
+    /**
      * ManyToMany relation with categories
      */
     public function categories() {

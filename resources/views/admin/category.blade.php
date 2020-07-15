@@ -6,8 +6,11 @@
         <div class="row-cols-2">
             <div>
                 <form
-                    action="{{ $category ? route('admin-categories-update-submit', $category->id) : route('admin-categories-create-submit') }}"
+                    action="{{ $category ? route('admin.categories.update', $category) : route('admin.categories.store') }}"
                     method="POST">
+                    @if ($category)
+                        @method('PUT')
+                    @endif
                     @csrf
                     <div class="form-group">
                         <label for="title">{{ __('Title') }}</label>
@@ -19,7 +22,7 @@
                         </small>
                     </div>
                     <div class="form-check form-group">
-                        <input type="checkbox" name="activate" value="1"
+                        <input type="checkbox" name="active" value="1"
                                {{ $category && $category->active ? 'checked' : '' }} class="form-check-input"
                                id="activate">
                         <label class="form-check-label" for="activate">{{ __('Activate?') }}</label>

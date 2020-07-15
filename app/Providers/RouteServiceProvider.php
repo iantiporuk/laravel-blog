@@ -16,6 +16,13 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected $namespace = 'App\Http\Controllers';
 
+    /**
+     * This namespace is applied to your admin controller routes.
+     *
+     * In addition, it is set as the URL generator's root namespace.
+     *
+     * @var string
+     */
     protected $adminNamespace = 'App\Http\Controllers\Admin';
 
     /**
@@ -32,8 +39,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
         parent::boot();
     }
 
@@ -75,6 +80,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapAdminRoutes()
     {
         Route::prefix('admin')
+            ->as('admin.')
             ->middleware(['web', 'auth', 'verified'])
             ->namespace($this->adminNamespace)
             ->group(base_path('routes/admin.php'));

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Contact;
 use App\Http\Requests\ContactRequest;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 
 class ContactController extends Controller
 {
@@ -11,7 +13,7 @@ class ContactController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function index()
     {
@@ -19,17 +21,21 @@ class ContactController extends Controller
     }
 
 
+    /**
+     * Save contact form data
+     *
+     * @param ContactRequest $request
+     * @return RedirectResponse
+     */
     public function submit(ContactRequest $request)
     {
         $request->validated();
 
-        $contact = new Contact;
-        $contact->name = $request->name;
-        $contact->email = $request->email;
-        $contact->subject = $request->subject;
-        $contact->message = $request->message;
+        $contact = new Contact($request->all());
         $contact->save();
 
-        return redirect()->back()->with('success', __('Your message was sent and will be processed is soon as possible.'));
+        return redirect()
+            ->back()
+            ->with('success', __('Your message was sent and will be processed as soon as possible.'));
     }
 }

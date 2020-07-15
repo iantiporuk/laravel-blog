@@ -6,11 +6,20 @@ use App\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PostRequest;
 use App\Post;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class PostController extends Controller
 {
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Application|Factory|View
+     */
     public function index()
     {
         $posts = Post::orderByDesc('updated_at')->get();
@@ -18,6 +27,11 @@ class PostController extends Controller
         return view('admin.posts', compact('posts'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Application|Factory|View
+     */
     public function create()
     {
         $categories = Category::where('active', true)->get();
@@ -25,104 +39,78 @@ class PostController extends Controller
         return view('admin.post', ['post' => null, 'categories' => $categories]);
     }
 
-    public function createSubmit(PostRequest $request)
+    /**
+     * @param PostRequest $request
+     * @return RedirectResponse
+     * @throws \Throwable
+     */
+    public function store(PostRequest $request)
     {
-        $post = new Post;
+        $post = new Post($request->all());
+        $post->active = $request->has('active');
+        $post->user_id = \Auth::getUser()->id;
 
         DB::transaction(function () use ($post, $request) {
-            $post = $this->fillPostFromRequest($post, $request);
             $post->save();
             $post->reattachCategories($request->categories);
         });
 
-        return redirect()->route('admin-posts')->with('success', __('Post successfully created.'));
+        return redirect()
+            ->route('admin.posts.index')
+            ->with('success', __('Post successfully created.'));
     }
 
-    public function update(int $id)
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param Post $post
+     * @return Application|Factory|RedirectResponse|View
+     */
+    public function edit(Post $post)
     {
-        $post = Post::find($id);
 
         $categories = Category::where('active', true)->get();
-
-        if (!$post) {
-            return $this->redirectToPostsListWithNotFoundError($id);
-        }
 
         return view('admin.post', ['post' => $post, 'categories' => $categories]);
     }
 
-    public function updateSubmit(int $id, PostRequest $request)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param PostRequest $request
+     * @param Post $post
+     * @return RedirectResponse
+     * @throws \Throwable
+     */
+    public function update(PostRequest $request, Post $post)
     {
-        $post = Post::find($id);
-
-        if (!$post) {
-            return $this->redirectToPostsListWithNotFoundError($id);
-        }
+        $post->fill($request->all());
+        $post->active = $request->has('active');
+        $post->user_id = \Auth::getUser()->id;
 
         DB::transaction(function () use ($post, $request) {
-            $post = $this->fillPostFromRequest($post, $request);
             $post->save();
             $post->reattachCategories($request->categories);
         });
 
-        return redirect()->route('admin-posts')->with('success', __('Post successfully updated.'));
+        return redirect()
+            ->route('admin.posts.index')
+            ->with('success', __('Post successfully updated.'));
     }
 
-    public function delete(int $id)
+    /**
+     * Remove the specified resource from storage.
+     * @param Post $post
+     * @return RedirectResponse
+     * @throws \Exception
+     */
+    public function destroy(Post $post)
     {
-        $post = Post::find($id);
-
-        if (!$post) {
-            return $this->redirectToPostsListWithNotFoundError($id);
-        }
 
         $post->delete();
 
-        return redirect()->route('admin-posts')->with('success', __('Post successfully deleted.'));
+        return redirect()
+            ->route('admin.posts.index')
+            ->with('success', __('Post successfully deleted.'));
     }
-
-    public function activate(int $id)
-    {
-        $post = Post::find($id);
-
-        if (!$post) {
-            return $this->redirectToPostsListWithNotFoundError($id);
-        }
-
-        $post->active = true;
-        $post->save();
-
-        return redirect()->route('admin-posts')->with('success', __('Post successfully activated.'));
-    }
-
-    public function deactivate(int $id)
-    {
-        $post = Post::find($id);
-
-        if (!$post) {
-            return $this->redirectToPostsListWithNotFoundError($id);
-        }
-
-        $post->active = false;
-        $post->save();
-
-        return redirect()->route('admin-posts')->with('success', __('Post successfully deactivated.'));
-    }
-
-    private function fillPostFromRequest(Post $post, PostRequest $request): Post
-    {
-
-        $post->title = $request->title;
-        $post->text = $request->text;
-        $post->user_id = \Auth::getUser()->id;
-        $post->active = (bool)$request->activate ?? false;
-
-        return $post;
-    }
-
-    private function redirectToPostsListWithNotFoundError(int $id)
-    {
-        return redirect()->route('admin-posts')->with('error', __('Can not find post with id = ') . $id);
-    }
-
 }

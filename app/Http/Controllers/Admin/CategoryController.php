@@ -4,11 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Category;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Admin\CategoryRequest;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
 
+    /**
+     * @return Application|Factory|View
+     */
     public function index()
     {
         $categories = Category::orderByDesc('updated_at')->get();
@@ -16,93 +23,67 @@ class CategoryController extends Controller
         return view('admin.categories', compact('categories'));
     }
 
+    /**
+     * @return Application|Factory|View
+     */
     public function create()
     {
-
         return view('admin.category', ['category' => null]);
     }
 
-    public function createSubmit(Request $request)
+    /**
+     * @param CategoryRequest $request
+     * @return RedirectResponse
+     */
+    public function store(CategoryRequest $request)
     {
-        $category = new Category;
-
-        $category->name = $request->name;
-        $category->active = (bool)$request->activate ?? false;
+        $category = new Category($request->all());
+        $category->active = $request->has('active');
         $category->save();
 
-        return redirect()->route('admin-categories')->with('success', __('Category successfully created.'));
+        return redirect()
+            ->route('admin.categories.index')
+            ->with('success', __('Category successfully created.'));
     }
 
-    public function update(int $id)
+    /**
+     * @param Category $category
+     * @return Application|Factory|View
+     */
+    public function edit(Category $category)
     {
-        $category = Category::find($id);
-
-        if (!$category) {
-            return $this->redirectToCategoriesListWithNotFoundError($id);
-        }
-
         return view('admin.category', ['category' => $category]);
     }
 
-    public function updateSubmit(int $id, Request $request)
+    /**
+     * @param CategoryRequest $request
+     * @param Category $category
+     * @return RedirectResponse
+     */
+    public function update(CategoryRequest $request, Category $category)
     {
-        $category = Category::find($id);
 
-        if (!$category) {
-            return $this->redirectToCategoriesListWithNotFoundError($id);
-        }
-
-        $category->name = $request->name;
-        $category->active = (bool)$request->activate ?? false;
+        $category->fill($request->all());
+        $category->active = $request->has('active');
         $category->save();
 
-        return redirect()->route('admin-categories')->with('success', __('Category successfully updated.'));
+        return redirect()
+            ->route('admin.categories.index')
+            ->with('success', __('Category successfully updated.'));
     }
 
-    public function delete(int $id)
+    /**
+     * @param Category $category
+     * @return RedirectResponse
+     * @throws \Exception
+     */
+    public function destroy(Category $category)
     {
-        $category = Category::find($id);
-
-        if (!$category) {
-            return $this->redirectToCategoriesListWithNotFoundError($id);
-        }
 
         $category->delete();
 
-        return redirect()->route('admin-categories')->with('success', __('Category successfully deleted.'));
+        return redirect()
+            ->route('admin.categories.index')
+            ->with('success', __('Category successfully deleted.'));
     }
-
-    public function activate(int $id)
-    {
-        $category = Category::find($id);
-
-        if (!$category) {
-            return $this->redirectToCategoriesListWithNotFoundError($id);
-        }
-
-        $category->active = true;
-        $category->save();
-
-        return redirect()->route('admin-categories')->with('success', __('Category successfully activated.'));
-    }
-
-    public function deactivate(int $id)
-    {
-        $category = Category::find($id);
-
-        if (!$category) {
-            return $this->redirectToCategoriesListWithNotFoundError($id);
-        }
-
-        $category->active = false;
-        $category->save();
-
-        return redirect()->route('admin-categories')->with('success', __('Category successfully deactivated.'));
-    }
-
-    private function redirectToCategoriesListWithNotFoundError(int $id)
-    {
-        return redirect()->route('admin-categories')->with('error', __('Can not find category with id = ') . $id);
-    }
-
 }

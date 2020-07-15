@@ -6,8 +6,9 @@
         <div class="row-cols-2">
             <div>
                 <form
-                    action="{{ $post ? route('admin-posts-update-submit', $post->id) : route('admin-posts-create-submit') }}"
+                    action="{{ $post ? route('admin.posts.update', $post) : route('admin.posts.store') }}"
                     method="POST">
+                    @if ($post) @method('PUT') @endif
                     @csrf
                     <div class="form-group">
                         <label for="title">{{ __('Title') }}</label>
@@ -34,7 +35,7 @@
                         </textarea>
                     </div>
                     <div class="form-check form-group">
-                        <input type="checkbox" name="activate" value="1"
+                        <input type="checkbox" name="active" value="1"
                                {{ $post && $post->active ? 'checked' : '' }} class="form-check-input" id="activate">
                         <label class="form-check-label" for="activate">{{ __('Activate?') }}</label>
                     </div>

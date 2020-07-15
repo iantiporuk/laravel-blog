@@ -3,20 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Post;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\View\View;
 
 class PostController extends Controller
 {
-    public function index() {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Application|Factory|View
+     */
+    public function index()
+    {
         $posts = Post::where('active', true)->get();
 
         return view('posts', compact('posts'));
     }
 
-    public function post(int $id) {
+    /**
+     * Get post by id
+     *
+     * @param int $id
+     * @return Application|Factory|View
+     */
+    public function post(int $id)
+    {
         $post = Post::find($id);
 
-        if(!$post) {
+        if (!$post) {
             abort('404');
         }
 

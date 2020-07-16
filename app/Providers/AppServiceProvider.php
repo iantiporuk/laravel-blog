@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Observers\PostObserver;
 use App\Post;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,5 +28,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Post::observe(PostObserver::class);
+
+        Blade::if('admin', function () {
+            return Auth::user()->isAdmin();
+        });
     }
 }

@@ -9,3 +9,9 @@ clear-all:
 	docker-compose exec app php artisan view:clear
 	docker-compose exec app php artisan config:clear
 	docker-compose exec app php artisan route:clear
+
+fresh:
+	docker-compose exec app php artisan migrate:fresh --seed
+
+seed:
+	docker-compose exec app php artisan db:seed

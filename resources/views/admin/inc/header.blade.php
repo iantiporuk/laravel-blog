@@ -17,10 +17,10 @@
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link {{request()->route()->getName() == 'admin.posts.index' ? 'active' : '' }}"
+                    <a class="nav-link {{Route::currentRouteNamed('admin.posts.index') ? 'active' : '' }}"
                        href="{{route('admin.posts.index')}}">{{__('Posts')}}</a>
                 </li>
-                <li class="nav-item"><a class="nav-link {{request()->route()->getName() == 'admin.categories.index' ? 'active' : '' }}"
+                <li class="nav-item"><a class="nav-link {{Route::currentRouteNamed('admin.categories.index') ? 'active' : '' }}"
                                         href="{{route('admin.categories.index')}}">{{__('Categories')}}</a></li>
 {{--                <li class="nav-item"><a class="nav-link {{request()->is('admin-about') ? 'active' : '' }}"--}}
 {{--                                        href="{{route('admin-about')}}">{{__('About Us')}}</a></li>--}}

@@ -10,6 +10,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class PostController extends Controller
@@ -46,9 +47,15 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
-        $post = new Post($request->all());
-        $post->active = $request->has('active');
-        $post->user_id = \Auth::getUser()->id;
+        $fields = $request->all();
+
+        if ($request->has('image')) {
+            $fields['image'] = $request->file('image')->store('posts');
+        }
+
+        $fields['active'] = $request->has('active');
+        $fields['user_id'] = \Auth::getUser()->id;;
+        $post = new Post($fields);
 
         DB::transaction(function () use ($post, $request) {
             $post->save();
@@ -84,12 +91,22 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, Post $post)
     {
-        $post->fill($request->all());
-        $post->active = $request->has('active');
-        $post->user_id = \Auth::getUser()->id;
+        $fields = $request->all();
 
-        DB::transaction(function () use ($post, $request) {
-            $post->save();
+        if ($request->has('image')) {
+
+            if ($post->image) {
+                Storage::delete($post->image);
+            }
+
+            $fields['image'] = $request->file('image')->store('posts');
+        }
+
+        $fields['active'] = $request->has('active');
+        $fields['user_id'] = \Auth::getUser()->id;
+
+        DB::transaction(function () use ($post, $request, $fields) {
+            $post->update($fields);
             $post->reattachCategories($request->categories);
         });
 

@@ -7,7 +7,8 @@
             <div>
                 <form
                     action="{{ $post ? route('admin.posts.update', $post) : route('admin.posts.store') }}"
-                    method="POST">
+                    method="POST"
+                    enctype="multipart/form-data">
                     @if ($post) @method('PUT') @endif
                     @csrf
                     <div class="form-group">
@@ -23,7 +24,8 @@
                         <select class="selectpicker form-control categories" data-style="bg-white" id="categories"
                                 name="categories[]" data-live-search="true" multiple required>
                             @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ ($post && $post->categories->where('id', $category->id)->first()) ? 'selected' : '' }}
+                                <option value="{{ $category->id }}"
+                                        {{ ($post && $post->categories->where('id', $category->id)->first()) ? 'selected' : '' }}
                                         data-tokens="{{ $category->name }}">{{ $category->name }}
                                 </option>
                             @endforeach
@@ -38,6 +40,10 @@
                         <input type="checkbox" name="active" value="1"
                                {{ $post && $post->active ? 'checked' : '' }} class="form-check-input" id="activate">
                         <label class="form-check-label" for="activate">{{ __('Activate?') }}</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="text">{{ __('Image') }}</label>
+                        <input type="file" name="image">
                     </div>
                     <button type="submit" class="btn btn-primary">{{ $post ? __('Update') : __('Post') }}</button>
                 </form>

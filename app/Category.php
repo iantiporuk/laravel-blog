@@ -19,7 +19,8 @@ class Category extends Model
     /**
      * ManyToMany relation with posts
      */
-    public function posts() {
+    public function posts()
+    {
         return $this->hasMany(Post::class);
     }
 }

@@ -16,19 +16,25 @@
 
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link {{request()->is('posts') ? 'active' : '' }}" href="{{route('posts')}}">{{__('Posts')}}</a></li>
-                <li class="nav-item"><a class="nav-link {{request()->is('subscription') ? 'active' : '' }}" href="{{route('subscription')}}">{{__('Subscribe')}}</a></li>
-                <li class="nav-item"><a class="nav-link {{request()->is('about') ? 'active' : '' }}" href="{{route('about')}}">{{__('About Us')}}</a></li>
-                <li class="nav-item"><a class="nav-link {{request()->is('contact') ? 'active' : '' }}" href="{{route('contact')}}">{{__('Contact Us')}}</a></li>
+                <li class="nav-item"><a class="nav-link {{Route::currentRouteNamed('posts') ? 'active' : '' }}"
+                                        href="{{route('posts')}}">{{__('Posts')}}</a></li>
+                <li class="nav-item"><a class="nav-link {{Route::currentRouteNamed('subscription') ? 'active' : '' }}"
+                                        href="{{route('subscription')}}">{{__('Subscribe')}}</a></li>
+                <li class="nav-item"><a class="nav-link {{Route::currentRouteNamed('about') ? 'active' : '' }}"
+                                        href="{{route('about')}}">{{__('About Us')}}</a></li>
+                <li class="nav-item"><a class="nav-link {{Route::currentRouteNamed('contact') ? 'active' : '' }}"
+                                        href="{{route('contact')}}">{{__('Contact Us')}}</a></li>
 
                 <!-- Authentication Links -->
                 @guest
                     <li class="nav-item">
-                        <a class="btn btn-outline-primary mr-md-3 ml-md-1" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        <a class="btn btn-outline-primary mr-md-3 ml-md-1"
+                           href="{{ route('login') }}">{{ __('Login') }}</a>
                     </li>
                     @if (Route::has('register'))
                         <li class="nav-item">
-                            <a class="btn btn-outline-success mt-2 mt-md-0" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            <a class="btn btn-outline-success mt-2 mt-md-0"
+                               href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
                     @endif
                 @else
@@ -39,7 +45,7 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('admin')  }}">{{ __('Admin')  }}</a>
+                            <a class="dropdown-item" href="{{ route('admin.index')  }}">{{ __('Admin')  }}</a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

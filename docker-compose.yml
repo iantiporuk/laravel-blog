@@ -24,6 +24,7 @@ services:
       - db
       - redis
       - smtp
+      - minio
 
   #Nginx Service
   webserver:
@@ -76,6 +77,26 @@ services:
     networks:
       - app-network
 
+  # Minio service
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    volumes:
+      - miniodata:/data
+    ports:
+      - "9005:9005"
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio123
+    command: server --address 0.0.0.0:9005 /data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9005/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - app-network
+
 #Docker Networks
 networks:
   app-network:
@@ -83,4 +104,6 @@ networks:
 #Volumes
 volumes:
   dbdata:
+    driver: local
+  miniodata:
     driver: local

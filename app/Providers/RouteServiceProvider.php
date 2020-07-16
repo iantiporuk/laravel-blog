@@ -26,6 +26,13 @@ class RouteServiceProvider extends ServiceProvider
     protected $adminNamespace = 'App\Http\Controllers\Admin';
 
     /**
+     * The path to the "home" route for your application.
+     *
+     * @var string
+     */
+    public const HOME = '/';
+
+    /**
      * The path to the "admin" route for your application.
      *
      * @var string
@@ -81,7 +88,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('admin')
             ->as('admin.')
-            ->middleware(['web', 'auth', 'verified'])
+            ->middleware(['web', 'auth', 'verified', 'admin'])
             ->namespace($this->adminNamespace)
             ->group(base_path('routes/admin.php'));
     }

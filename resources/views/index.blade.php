@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        @include('inc.messages')
         <div class="row justify-content-center">
             <div class="col-md-12">
                 You are on index page!

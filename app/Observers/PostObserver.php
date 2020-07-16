@@ -29,6 +29,9 @@ class PostObserver
         isset($post->getChanges()['active']) && $this->fireNewPostEvent($post);
     }
 
+    /**
+     * @param $post
+     */
     private function fireNewPostEvent($post)
     {
         if ($post->active) {

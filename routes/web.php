@@ -10,8 +10,10 @@ Route::get('/about', function () {
 })->name('about');
 
 Route::get('/subscription', 'SubscriptionController@index')->name('subscription');
-Route::post('/subscription/subscribe', 'SubscriptionController@subscribe')->name('subscribe');
-Route::get('/subscription/unsubscribe/{email}', 'SubscriptionController@unsubscribe')->name('unsubscribe');
+Route::post('/subscription', 'SubscriptionController@subscribe')->name('subscribe');
+Route::get('/subscription/unsubscribe', 'SubscriptionController@unsubscribeForm')
+    ->name('unsubscribe-form');
+Route::delete('/subscription/unsubscribe', 'SubscriptionController@unsubscribe')->name('unsubscribe');
 
 Route::get('/contact', 'ContactController@index')->name('contact');
 Route::post('/contact/submit', 'ContactController@submit')->name('contact-submit');

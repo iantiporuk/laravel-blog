@@ -15,3 +15,9 @@ fresh:
 
 seed:
 	docker-compose exec app php artisan db:seed
+
+composer-install:
+	docker-compose exec app composer install
+
+test:
+	docker-compose exec app php artisan test

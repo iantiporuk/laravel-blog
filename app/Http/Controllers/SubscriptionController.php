@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SubscriptionRequest;
 use App\Subscription;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class SubscriptionController extends Controller
 {
@@ -28,9 +33,11 @@ class SubscriptionController extends Controller
      */
     public function subscribe(Request $request)
     {
-        $request->validate([
-            'email' => ['required', 'email', 'max:255', 'unique:subscriptions'],
-        ]);
+        $request->validate(
+            [
+                'email' => ['required', 'email', 'max:255', 'unique:subscriptions'],
+            ]
+        );
 
         $subscription = new Subscription($request->all());
         $subscription->save();
@@ -41,26 +48,43 @@ class SubscriptionController extends Controller
     }
 
     /**
-     * Unsubscribe user by email
+     * Unsubscribe form
      *
-     * @param string $email
+     * @param Request $request
+     * @return Application|Factory|View
+     */
+    public function unsubscribeForm(Request $request)
+    {
+        $user = Auth::user();
+
+        return view('unsubscription', ['email' => $user ? $user->email : '']);
+    }
+
+    /**
+     * Unsubscribe form
+     *
      * @param Request $request
      * @return RedirectResponse
      */
-    public function unsubscribe(string $email, Request $request)
+    public function unsubscribe(Request $request)
     {
-        $subscription = Subscription::where('email', $email)->first();
+        $request->validate(
+            [
+                'email' => ['required', 'email', 'max:255'],
+            ]
+        );
 
-        if (!$subscription) {
+        try {
+            $subscription = Subscription::where('email', $request->get('email'))->firstOrFail();
+            $subscription->delete();
+
             return redirect()
                 ->route('subscription')
+                ->with('success', __('You have successfully unsubscribed.'));
+        } catch (\Exception $exception) {
+            return redirect()
+                ->route('unsubscription')
                 ->with('warning', __('You have not subscribed yet'));
         }
-
-        $subscription->delete();
-
-        return redirect()
-            ->route('subscription')
-            ->with('success', __('You have successfully unsubscribed.'));
     }
 }
